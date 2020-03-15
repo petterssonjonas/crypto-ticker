@@ -8,8 +8,7 @@ Place text statically, not by division as below.
 Price history in smaller text under main price.
 Price time.
 Use TinyDB?
-Big price move in White, small Yellow.
-Change font. Put it in script dir.
+Big price move in Yellow, small White.
 Make "package" for ppl to download and run on their phat.
 Maybe make one for both phat and what. Args for type and colors.
 """
@@ -19,7 +18,8 @@ Maybe make one for both phat and what. Args for type and colors.
 # sudo pip3 search/install pillow, inky, fredokaone, bitcoin-price-api, loguru
 from PIL import Image, ImageFont, ImageDraw
 from inky import InkyPHAT
-from font_fredoka_one import FredokaOne
+#from font_fredoka_one import FredokaOne
+from font_hanken_grotesk import HankenGroteskBold, HankenGroteskMedium
 from exchanges.bitfinex import Bitfinex
 
 # Im using a yellow inky pHAT.
@@ -35,7 +35,7 @@ inky_display.set_border(inky_display.YELLOW)
 # Set the image. Has to be a specific color palette and size.
 # I used GIMP to edit one of the example images from the inky git.
 # You need the inky-palete.gpl imported and active in GIMP. 
-img = Image.open("/home/pi/code/btc-backdrop.png")
+img = Image.open("/home/pi/code/btc-backdrop-small.png")
 text = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT))
 draw = ImageDraw.Draw(img)
 
@@ -46,10 +46,8 @@ btc = Bitfinex().get_current_price()
 message = format(btc, ".0f")
 
 
-
-
 # Set parameterss of text, placement, color, font.
-font = ImageFont.truetype(FredokaOne, 42)
+font = ImageFont.truetype(HankenGroteskBold, 40)
 w, h = font.getsize(message)
 x = (inky_display.WIDTH / 1.3) - (w / 1.3)
 y = (inky_display.HEIGHT / 2.25) - (h / 2.25)

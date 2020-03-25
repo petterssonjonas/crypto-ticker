@@ -6,8 +6,8 @@ from datetime import datetime
 from pytz import timezone
 from PIL import Image, ImageFont, ImageDraw
 from inky import InkyPHAT
+from font_roboto import Roboto, RobotoBold
 from font_fredoka_one import FredokaOne
-from font_hanken_grotesk import HankenGroteskMedium
 from exchanges.bitfinex import Bitfinex
 """
 TODO:
@@ -69,8 +69,8 @@ exchange = "bitfinex"
 
 # Set fonts and font sizes
 pricefont = ImageFont.truetype(FredokaOne, 36)
-timefont = ImageFont.truetype(HankenGroteskMedium, 16)
-msgfont = ImageFont.truetype(HankenGroteskMedium, 16)
+timefont = ImageFont.truetype(RobotoBold, 16)
+msgfont = ImageFont.truetype(RobotoBold, 16)
 
 # Placement of texts.
 # x, y starts at top left corner. Display is 212x104px.
@@ -78,20 +78,21 @@ msgfont = ImageFont.truetype(HankenGroteskMedium, 16)
 
 wprice, xprice = pricefont.getsize(price)
 pricex = 80
-pricey = 27
+pricey = 25
 
 wdate, hdate = timefont.getsize(localtime)
 datex = 1
 datey = 84
 
 wpair, hpair = msgfont.getsize(pair)
-pairx = 0                                                                # Top
-pairy = 0                                                                # Left
+pairx = 1                                                                # Top
+pairy = 1                                                                # Left
 
 wex, hex = msgfont.getsize(exchange)
-exx = (inky_display.WIDTH - wex)                                         # Top
-exy = (inky_display.HEIGHT - hex) - (inky_display.HEIGHT - hex)          # Right
+exx = (inky_display.WIDTH - wex) - 1                                     # Top
+exy = (inky_display.HEIGHT - hex + 1) - (inky_display.HEIGHT - hex + 1)          # Right
 
+"""
 #Debugging text size and placements
 print("Price text size: ", wprice, "x", xprice, "px")
 print("Price text placement: ", pricex, "x", pricey, "px")
@@ -101,7 +102,7 @@ print("Currency text size: ", wpair, "x", hpair, "px")
 print("Currency text placement: ", pairx, "x", pairy, "px")
 print("Exchange text size: ", wex, "x", hex, "px")
 print("Exchange text placement: ", exx, "x", exy, "px")
-
+"""
 
 
 
@@ -114,26 +115,29 @@ full sized black, white, yellow, red .png image you dont need it? Maybe only for
 placing small images?"""
 # Set background mask as black image - actually draws 8-bit pixels all over.
 bg_mask = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT), (inky_display.BLACK))
-#bgimage = Image.open(os.path.join(PATH, "resources/black-backdrop.png"))
+#bgimage = Image.open(os.path.join(PATH, "resources/btc-backdrop-small.png"))
 draw = ImageDraw.Draw(bg_mask)
+"""
+Drawing icons on top of the bgmask doesnt work for some reason. Getting error about either
+image not matching or some transparency error. 
+"""
 # Icons
 #usdicon = Image.open(os.path.join(PATH, "resources/usd-icon.png"))
 #btcicon = Image.open(os.path.join(PATH, "resources/btc-icon.png"))
 #sunicon = Image.open(os.path.join(PATH, "resources/icon-sun.png"))
-#sunicon.paste(bgimage, (28, 36), bg_mask)
+#sunicon.paste(sunicon, (28, 36), bg_mask)
 
 
 # My image has black background so im printing text in white.
 # White seems to stick to the screen less. Yellow stays even after several cleaning cycles.
 # Plan to make this an arg later.
 # draw is what to draw on, the image backdrop
-
 draw.text((pricex, pricey), price, inky_display.WHITE, pricefont)
 draw.text((datex, datey), localtime, inky_display.WHITE, timefont)
 draw.text((pairx, pairy), pair.upper(), inky_display.WHITE, msgfont)
 draw.text((exx, exy), exchange.capitalize(), inky_display.WHITE, msgfont)
 
 # Finally print it all
-#inky_display.set_image(backdrop)
+#inky_display.set_image(bgimage)
 inky_display.set_image(bg_mask)
 inky_display.show()

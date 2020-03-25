@@ -119,7 +119,7 @@ bg_mask = Image.new("P", (inky_display.WIDTH, inky_display.HEIGHT), (inky_displa
 draw = ImageDraw.Draw(bg_mask)
 """
 Drawing icons on top of the bgmask doesnt work for some reason. Getting error about either
-image not matching or some transparency error. 
+image not matching or some transparency error.
 """
 # Icons
 #usdicon = Image.open(os.path.join(PATH, "resources/usd-icon.png"))

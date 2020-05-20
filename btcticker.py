@@ -77,8 +77,8 @@ msgfont = ImageFont.truetype(RobotoBold, 16)
 # getsize is the size of the text in px, depends on fontsize and amount of text.
 
 wprice, xprice = pricefont.getsize(price)
-pricex = 80
-pricey = 25
+pricex = (inky_display.WIDTH - wprice) / 2
+pricey = (inky_display.HEIGHT - xprice) / 2
 
 wdate, hdate = timefont.getsize(localtime)
 datex = 1
